@@ -46,10 +46,36 @@ inquirer
                 addRole();
             }else if(answer.name === "Department"){
                 addDept();
-            }else(answer.name === "Exit"){
-                startFunc();
+            };
+            // }else(answer.name === "Exit"){
+            //     startFunc();
+            // }
+        });
+    }else if(answer.name === "View employees, roles, or departments"){
+        inquirer
+        .prompt([
+            {
+                type: "list",
+                message: "Would you like to view employees, roles, departments or exit?",
+                choices: ["Employees", "Roles", "Departments", "Exit"],
+                name: viewingChoice
+            }
+        ]).then(answer => {
+            if(answer.name === "Employees"){
+                viewEmployees();
+            }else if(answer.name === "Roles"){
+                viewRoles();
+            }else if(answer.name === "Departments"){
+                viewDepts();
             }
         });
-    }
+    }else if(answer.name === "Update employee roles"){
+        inquirer
+        .prompt([
+            {
+                type: "list",
+                message: ""
+            }
+        ])
     }
 })
