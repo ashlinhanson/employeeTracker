@@ -10,8 +10,8 @@ var connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "Anhpmd0424!",
-  database: "employee_db"
+  password: "",
+  database: "employeetracking_db"
 });
 
 connection.connect(function(err) {
@@ -21,7 +21,7 @@ connection.connect(function(err) {
 });
 
 function afterConnection() {
-  connection.query("SELECT * FROM songs", function(err, res) {
+  connection.query("SELECT * FROM employee", function(err, res) {
     if (err) throw err;
     console.log(res);
     connection.end();
@@ -29,7 +29,7 @@ function afterConnection() {
 }
 
 function selectAll(){
-    connection.query("SELECT * FROM songs", function(err, res){
+    connection.query("SELECT * FROM employee", function(err, res){
         if (err) throw err;
         console.log(res);
     });
@@ -37,17 +37,12 @@ function selectAll(){
 };
 
 function createProduct(){
-    console.log("Inserting new product...\n");
+    console.log("");
     connection.query(
-        "INSERT INTO songs SET ?",
-        {
-            title: "hjgfjgf",
-            artist: "jhgjhg",
-            genre: "kmhjbg"
-        },
+        
         function (err, res){
             if (err) throw err;
-            console.log(res.affectedRows + " song inserted\n");
+            console.log(res.affectedRows + "\n");
             updateProduct();
         }
     )
@@ -55,7 +50,7 @@ function createProduct(){
 
 function updateProduct(){
     var query = connection.query(
-        "UPDATE songs SET ? WHERE ?",
+        "UPDATE employee SET ? WHERE ?",
         [
             
         ]
