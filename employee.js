@@ -6,8 +6,13 @@ function viewEmployees(){
     //function to view employees
 }
 
-// eventually
+//---eventually---
 
 // add a function to view employees by manager
 
+// update employees function
+
 // delete employees function
+
+
+module.exports = "employee";

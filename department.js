@@ -8,11 +8,11 @@ function viewDept(){
 
 
 
-//eventually will need :
+//---eventually---
 
-//Update departments
+//Update departments function
 
-//Delete departments
+//Delete departments function
 
 
-module.exports = "department"
+module.exports = "department";
