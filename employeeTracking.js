@@ -1,19 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
-const { allowedNodeEnvironmentFlags } = require("process");
 
-
-
-let connection = mysql.createConnection({
-    host: "localhost",
-
-    port: 3306,
-
-    user: "root",
-
-    password: "",
-    database: "employeetracking_db"
-});
 
 connection.connect(function(err) {
     if (err) throw err;
@@ -76,11 +63,11 @@ inquirer
                 type: "rawlist",
                 message: "What would you like to update?",
                 choices : function() {
-                    var choiceArray = [];
+                    var rolesArray = [];
                     for (var i = 0; i < results.length; i++) {
-                      choiceArray.push(results[i].item_name);
+                      rolesArray.push(results[i].role_id);
                     }
-                    return choiceArray;
+                    return rolesArray;
                   },
                 name: updateRole,
             }

@@ -1,3 +1,7 @@
+const inquire = require("inquire");
+const mysql = require("mysql");
+const connection = require("connection")
+
 function addEmployee(){
     //function to add an employee
 };
