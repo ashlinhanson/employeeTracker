@@ -73,8 +73,16 @@ inquirer
         inquirer
         .prompt([
             {
-                type: "list",
-                message: ""
+                type: "rawlist",
+                message: "What would you like to update?",
+                choices : function() {
+                    var choiceArray = [];
+                    for (var i = 0; i < results.length; i++) {
+                      choiceArray.push(results[i].item_name);
+                    }
+                    return choiceArray;
+                  },
+                name: updateRole,
             }
         ])
     }
