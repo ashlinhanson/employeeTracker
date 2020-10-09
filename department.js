@@ -1,6 +1,7 @@
 const inquire = require("inquire");
 const mysql = require("mysql");
-const connection = require("connection")
+const connection = require("connection");
+const inquirer = require("inquirer");
 
 function addDept(){
     //function for adding a dept
@@ -21,7 +22,6 @@ function addDept(){
         connection.query(
             "INSERT INTO department SET ?",
             {
-                id: INT NOT NULL AUTO_INCREMENT,
                 name: answer.deptName
             },
             function (err) {
@@ -35,7 +35,10 @@ function addDept(){
 
 function viewDept(){
     //function for viewing the departments
-};
+    connection.query("SELECT * FROM department", function(err, results){
+        if (err) throw err;
+        console.log(results);
+})};
 
 
 
