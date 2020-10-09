@@ -1,6 +1,5 @@
-const inquire = require("inquire");
-const mysql = require("mysql");
-const connection = require("connection")
+const connection = require("configdb.js");
+const inquirer = require("inquirer");
 
 function addEmployee(){
     //function to add an employee
