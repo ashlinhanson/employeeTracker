@@ -18,7 +18,7 @@ function addRole(){
             "INSERT INTO role SET ?",
             {
                 name: roleName,
-            }, function(err, res){
+            }, function(err, results){
                 if (err) throw err;
                 console.log("The role was added successfully!");
             }
@@ -30,9 +30,9 @@ function viewRoles(){
     //function to view roles
     connection.query(
         "SELECT * FROM role",
-        function(err, res){
+        function(err, results){
             if (err) throw err;
-            console.log(res);
+            console.log(results);
         }
     )
 
