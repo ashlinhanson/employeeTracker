@@ -12,12 +12,11 @@ function addRole(){
             name: "roleName"
         },
     ]).then(answer => {
-        const {roleName} = answer;
 
         connection.query(
             "INSERT INTO role SET ?",
             {
-                name: roleName,
+                name: answer.roleName,
             }, function(err, results){
                 if (err) throw err;
                 console.log("The role was added successfully!");
