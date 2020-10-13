@@ -1,6 +1,5 @@
 const connection = require("configdb.js");
 const inquirer = require("inquirer");
-const { connect } = require("./configdb");
 
 function addRole(){
     //function to add a role

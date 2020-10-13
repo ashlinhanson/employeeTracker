@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
+const connection = require("./configdb.js");
 
 
 connection.connect(function(err) {
@@ -26,7 +27,7 @@ function startApp(){
                     type: "list",
                     message: "Are you wanting to add an employee, a role, a department or exit?",
                     choices: ["Employee", "Role", "Department", "Exit"],
-                    name: addingChoice
+                    name: "addingChoice"
                 }
             ]).then(answer => {
                 if(answer.name === "Employee"){
@@ -47,7 +48,7 @@ function startApp(){
                     type: "list",
                     message: "Would you like to view employees, roles, departments or exit?",
                     choices: ["Employees", "Roles", "Departments", "Exit"],
-                    name: viewingChoice
+                    name: "viewingChoice"
                 }
             ]).then(answer => {
                 if(answer.name === "Employees"){
