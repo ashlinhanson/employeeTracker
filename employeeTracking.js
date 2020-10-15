@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
 const connection = require("./configdb");
-const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
 
 
 connection.connect(function(err) {
