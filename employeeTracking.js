@@ -220,6 +220,7 @@ function addEmployee(){
         const {firstName, lastName, employeeId, employeeRole, employeeManager} = answer; 
         
         connection.query(
+            "INSERT INTO Employee SET ?",
             {
                 first_name: answer.firstName,
                 last_name: answer.lastName,
