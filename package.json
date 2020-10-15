@@ -22,5 +22,6 @@
   "bugs": {
     "url": "https://github.com/ashlinhanson/employeeTracker/issues"
   },
-  "homepage": "https://github.com/ashlinhanson/employeeTracker#readme"
+  "homepage": "https://github.com/ashlinhanson/employeeTracker#readme",
+  "keywords": []
 }

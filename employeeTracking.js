@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
-const connection = require("./configdb.js");
+const connection = require("./configdb");
 
 
 connection.connect(function(err) {
@@ -20,64 +20,62 @@ function startApp(){
             name: "optionChoice"
         }
     ]).then(answer => {
-        if(answer.name === "Add employee, role, department"){
-            inquirer
-            .prompt([
-                {
-                    type: "list",
-                    message: "Are you wanting to add an employee, a role, a department or exit?",
-                    choices: ["Employee", "Role", "Department", "Exit"],
-                    name: "addingChoice"
-                }
-            ]).then(answer => {
-                if(answer.name === "Employee"){
-                    addEmployee();
-                }else if(answer.name === "Role"){
-                    addRole();
-                }else if(answer.name === "Department"){
-                    addDept();
-                };
-                // }else(answer.name === "Exit"){
-                //     startApp();
-                // }
-            });
-        }else if(answer.name === "View employees, roles, or departments"){
-            inquirer
-            .prompt([
-                {
-                    type: "list",
-                    message: "Would you like to view employees, roles, departments or exit?",
-                    choices: ["Employees", "Roles", "Departments", "Exit"],
-                    name: "viewingChoice"
-                }
-            ]).then(answer => {
-                if(answer.name === "Employees"){
-                    viewEmployees();
-                }else if(answer.name === "Roles"){
-                    viewRoles();
-                }else if(answer.name === "Departments"){
-                    viewDepts();
-                }
-            });
-        }else if(answer.name === "Update employee roles"){
-            inquirer
-            .prompt([
-                {
-                    type: "rawlist",
-                    message: "What would you like to update?",
-                    choices : function() {
-                        var rolesArray = [];
-                        for (var i = 0; i < results.length; i++) {
-                        rolesArray.push(results[i].role_id);
-                        }
-                        return rolesArray;
-                    },
-                    name: updateRole,
-                }
-            ])
+        if (answer.optionChoice === "Add employee, role, or department"){
+            addOption();
+        }else if(answer.optionChoice === "View employees, roles, or departments"){
+            viewingOption();
+        }else if(answer.optionChoice === "Update employee roles"){
+            updateEmpRole();
+        };
+    });
+};
+
+function addOption(){
+    inquirer
+    .prompt([
+        {
+            type: "list",
+            message: "Would you like to add an employee, a role, or a department?",
+            choices: ["Add employee", "Add a role", "Add a department"],
+            name: "addingChoice"
+        }
+    ]).then(answer => {
+        if (answer.addingChoice === "Add employee"){
+            addEmployee();
+        }else if (answer.addingChoice === "Add a role"){
+            addRole();
+        }else if (answer.addingChoice === "Add a department"){
+            addDept();
         }
     })
 };
+
+
+function viewingOption(){
+    inquirer
+    .prompt([
+        {
+            type: "list",
+            message: "Would you like to view employees, roles, or departments?",
+            choice: ["View employees", "View roles", "View departments"],
+            name: "viewingChoice"
+        }
+    ]).then(answer => {
+        if (answer.viewingChoice === "View employees"){
+            viewEmployees();
+        }else if (answer.viewingChoice === "View roles"){
+            viewRoles();
+        }else if (answer.viewingChoice === "View departments"){
+            viewDept();
+        }
+    })
+}
+
+function updateEmpRole(){
+    // update employee role function
+};
+
+// adding functions
 
 function addRole(){
     //function to add a role
@@ -88,34 +86,38 @@ function addRole(){
             message: "What is the name of the role being added?",
             name: "roleName"
         },
+        {
+            type: "input",
+            message: "What is the id for the new role?",
+            name: "roleId"
+        },
+        {
+            type:"input",
+            message: "What is the salary for this role?",
+            name: "roleSalary",
+        },
+        {
+            type: "input",
+            message: "What department does this belong in?",
+            name: "roleDept"
+        }
     ]).then(answer => {
-
+        
+        const {roleName, roleId, roleSalary, roleDepartment} = answer;
         connection.query(
             "INSERT INTO role SET ?",
             {
-                name: answer.roleName,
+                title: answer.roleName,
+                id: answer.roleId,
+                salary: answer.roleSalary,
+                department_id: answer.roleDept
+                
             }, function(err, results){
                 if (err) throw err;
                 console.log("The role was added successfully!");
             }
         )
     });
-};
-
-function viewRoles(){
-    //function to view roles
-    connection.query(
-        "SELECT * FROM role",
-        function(err, results){
-            if (err) throw err;
-            console.log(results);
-        }
-    )
-
-};
-
-function updateEmpRole(){
-    // update employee role function
 };
 
 function addEmployee(){
@@ -125,14 +127,29 @@ function addEmployee(){
         {
             type: "input",
             message: "What is the new employees first name?",
-            name: firstName
+            name: "firstName"
         },
         {
             type: "input",
             message: "What is the new employees last name?",
             name: "lastName"
         },
+        {
+            type: "input",
+            message: "What is the employee's ID?",
+            name: "employeeId"
+        },
+        {
+            type: "input",
+            message: "What is the employee's role ID?",
+            name: "employeeRole"
+        },
+        {
+            type: "input",
+            message: "What is the employee's manager ID?"
+        }
     ]).then(answer => {
+        const {firstName, lastName} = answer; 
         
         connection.query(
             {
@@ -146,15 +163,6 @@ function addEmployee(){
     })
 };
 
-function viewEmployees(){
-    //function to view employees
-    connection.query("SELECT * FROM department", function(err, results){
-        if (err) throw err;
-        console.log(results);
-    });
-
-};
-
 function addDept(){
     //function for adding a dept
     inquire
@@ -162,13 +170,7 @@ function addDept(){
         {
             name: "deptName",
             type: "input",
-            message: "What is the name of the department you are adding",
-            validate: function(value){
-                if (isNaN(value) === false){
-                    return true;
-                }
-                return false;
-            }
+            message: "What is the name of the department you are adding"
         },
     ]).then(function(answer){
         connection.query(
@@ -185,10 +187,36 @@ function addDept(){
     });
 };
 
+// viewing functions
+
+function viewRoles(){
+    //function to view roles
+    connection.query(
+        "SELECT * FROM role",
+        function(err, results){
+            if (err) throw err;
+            console.log(results);
+        }
+    )
+
+};
+
+function viewEmployees(){
+    //function to view employees
+    connection.query("SELECT * FROM employee", function(err, results){
+        if (err) throw err;
+        console.log(results);
+    });
+
+};
+
+
+
 function viewDept(){
     //function for viewing the departments
     connection.query("SELECT * FROM department", function(err, results){
         if (err) throw err;
         console.log(results);
 })};
+
 
