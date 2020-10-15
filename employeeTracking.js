@@ -111,7 +111,7 @@ function addRole(){
                 id: answer.roleId,
                 salary: answer.roleSalary,
                 department_id: answer.roleDept
-                
+
             }, function(err, results){
                 if (err) throw err;
                 console.log("The role was added successfully!");
@@ -146,15 +146,19 @@ function addEmployee(){
         },
         {
             type: "input",
-            message: "What is the employee's manager ID?"
+            message: "What is the employee's manager ID?",
+            name: "employeeManager"
         }
     ]).then(answer => {
-        const {firstName, lastName} = answer; 
+        const {firstName, lastName, employeeId, employeeRole, employeeManager} = answer; 
         
         connection.query(
             {
                 first_name: answer.firstName,
-                last_name: answer.lastName
+                last_name: answer.lastName,
+                id: answer.employeeId,
+                role_id: answer.employeeRole,
+                manager_id: answer.employeeManager
             }, function (err, result){
                 if (err) throw err;
                 console.log("The employee has been added successfully")
@@ -168,20 +172,27 @@ function addDept(){
     inquire
     .prompt([
         {
-            name: "deptName",
             type: "input",
-            message: "What is the name of the department you are adding"
+            message: "What is the name of the new department?",
+            name: "deptName",
         },
+        {
+            type: "input",
+            message: "What is the id of the new department?",
+            name: "deptId"
+        }
     ]).then(function(answer){
+
+        const {deptName, deptId} = answer
+
         connection.query(
             "INSERT INTO department SET ?",
             {
-                name: answer.deptName
-            },
-            function (err) {
+                name: answer.deptName,
+                id: answer.deptId
+            },function (err) {
                 if (err) throw err;
                 console.log("Your department has been added successfully");
-                addDept();
             }
         );
     });
