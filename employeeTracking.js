@@ -113,10 +113,10 @@ function updateEmpRole(){
                 {
                     id: empId
 
-                }], function(err){
+                }], function(err, results){
                     if (err) throw err;
                     console.log("The employee's role was updated successfully!");
-                    //add a restart function
+                    console.table(results);
                 }
             );
             inquirer
@@ -179,8 +179,8 @@ function addRole(){
 
             }, function(err, results){
                 if (err) throw err;
+                console.table(results);
                 console.log("The role was added successfully!");
-                //add a restart function
             }
         )
         addRestart()
@@ -226,8 +226,9 @@ function addEmployee(){
                 id: answer.employeeId,
                 role_id: answer.employeeRole,
                 manager_id: answer.employeeManager
-            }, function (err, result){
+            }, function (err, results){
                 if (err) throw err;
+                console.table(results);
                 console.log("The employee has been added successfully")
             }
         )
@@ -258,11 +259,11 @@ function addDept(){
             {
                 name: answer.deptName,
                 id: answer.deptId
-            },function (err) {
+            },function (err, results) {
                 if (err) throw err;
+                console.table(results);
                 console.log("Your department has been added successfully");
             }
-            //add a restart function
         );
         addRestart();
     });
@@ -276,7 +277,7 @@ function viewRoles(){
         "SELECT * FROM role",
         function(err, results){
             if (err) throw err;
-            console.log(results);
+            console.table(results);
         }
     )
     viewRestart();
@@ -287,8 +288,7 @@ function viewEmployees(){
     //function to view employees
     connection.query("SELECT * FROM employee", function(err, results){
         if (err) throw err;
-        console.log(results);
-        //need a restart function
+        console.table(results);
     });
     viewRestart();
 };
@@ -299,7 +299,7 @@ function viewDept(){
     //function for viewing the departments
     connection.query("SELECT * FROM department", function(err, results){
         if (err) throw err;
-        console.log(results);
+        console.table(results);
     });
     viewRestart();
 };
