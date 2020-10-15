@@ -57,7 +57,7 @@ function viewingOption(){
         {
             type: "list",
             message: "Would you like to view employees, roles, or departments?",
-            choice: ["View employees", "View roles", "View departments"],
+            choices: ["View employees", "View roles", "View departments"],
             name: "viewingChoice"
         }
     ]).then(answer => {
@@ -73,7 +73,53 @@ function viewingOption(){
 
 function updateEmpRole(){
     // update employee role function
+
+    connection.query("SELECT id, first_name, last_name FROM employee", function(err, result){
+        if(err) throw err;
+        inquirer
+        .prompt([
+            {
+                type: "list",
+                message: "Which employee would you like update?",
+                name: "empChoice",
+                choices: function () {
+                    let emps = [];
+                    for (let i=0; i < result.length; i++){
+                        emps.push(result[i].id + " " + result[i].first_name + " " + result[i].last_name)
+                    }
+                    return emps;
+                },
+            },
+            {
+                type: "input",
+                message: "What is the id of the employee's new role?",
+                name: "newRole"
+            }
+        ]).then(answer => {
+
+            let empId = answer.empChoice.substr(0, 2);
+            let newRole = answer.newRole;
+
+            connection.query(
+                "UPDATE employee SET ? WHERE ?",
+                [{
+                    role_id: newRole
+
+                },
+                {
+                    id: empId
+
+                }], function(err){
+                    if (err) throw err;
+                    console.log("The employee's role was updated successfully!");
+                    //add a restart function
+                }
+            )
+        })
+    })
+
 };
+
 
 // adding functions
 
@@ -115,6 +161,7 @@ function addRole(){
             }, function(err, results){
                 if (err) throw err;
                 console.log("The role was added successfully!");
+                //add a restart function
             }
         )
     });
@@ -163,6 +210,7 @@ function addEmployee(){
                 if (err) throw err;
                 console.log("The employee has been added successfully")
             }
+            //add a restart function
         )
     })
 };
@@ -194,6 +242,7 @@ function addDept(){
                 if (err) throw err;
                 console.log("Your department has been added successfully");
             }
+            //add a restart function
         );
     });
 };
@@ -207,6 +256,7 @@ function viewRoles(){
         function(err, results){
             if (err) throw err;
             console.log(results);
+            //need a restart function
         }
     )
 
@@ -217,6 +267,7 @@ function viewEmployees(){
     connection.query("SELECT * FROM employee", function(err, results){
         if (err) throw err;
         console.log(results);
+        //need a restart function
     });
 
 };
@@ -228,6 +279,7 @@ function viewDept(){
     connection.query("SELECT * FROM department", function(err, results){
         if (err) throw err;
         console.log(results);
+        //need a restart function
 })};
 
 
