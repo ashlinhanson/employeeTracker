@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
 const connection = require("./configdb");
+const { connectableObservableDescriptor } = require("rxjs/internal/observable/ConnectableObservable");
 
 
 connection.connect(function(err) {
@@ -16,7 +17,7 @@ function startApp(){
             type: "list",
             message: "Welcome to The Employee Tracking System. What are you needing to do?",
             choices: ["Add employee, role, or department", "View employees, roles, or departments", 
-            "Update employee roles"],
+            "Update employee roles", "End session"],
             name: "optionChoice"
         }
     ]).then(answer => {
@@ -26,6 +27,9 @@ function startApp(){
             viewingOption();
         }else if(answer.optionChoice === "Update employee roles"){
             updateEmpRole();
+        }else if(answer.optionChoice === "End session"){
+            console.log("Thanks for using The Employee Tracker. See you next time!");
+            connection.end();
         };
     });
 };
@@ -335,5 +339,11 @@ function viewRestart(){
             startApp()
         };
     });
-}
+};
+
+
+function endApp(){
+    console.log("Thank you for using The Employee Tracking System. See you next time!");
+    connection.end();
+};
 
