@@ -114,9 +114,24 @@ function updateEmpRole(){
                     console.log("The employee's role was updated successfully!");
                     //add a restart function
                 }
-            )
-        })
-    })
+            );
+            inquirer
+            .prompt([
+                {
+                    type: "list",
+                    message: "Would you like to continue updating roles or go back to the main menu?",
+                    choices: ["Continue updating roles", "Back to main menu"],
+                    name: "updateResOpt"
+                }
+            ]).then(answer => {
+                if(answer.updateResOpt === "Continue updating roles"){
+                    updateEmpRole();
+                }else{
+                    startApp()
+                };
+            });
+        });
+    });
 
 };
 
@@ -164,6 +179,7 @@ function addRole(){
                 //add a restart function
             }
         )
+        addRestart()
     });
 };
 
@@ -210,14 +226,14 @@ function addEmployee(){
                 if (err) throw err;
                 console.log("The employee has been added successfully")
             }
-            //add a restart function
         )
+        addRestart();
     })
 };
 
 function addDept(){
     //function for adding a dept
-    inquire
+    inquirer
     .prompt([
         {
             type: "input",
@@ -244,6 +260,7 @@ function addDept(){
             }
             //add a restart function
         );
+        addRestart();
     });
 };
 
@@ -256,9 +273,9 @@ function viewRoles(){
         function(err, results){
             if (err) throw err;
             console.log(results);
-            //need a restart function
         }
     )
+    viewRestart();
 
 };
 
@@ -269,7 +286,7 @@ function viewEmployees(){
         console.log(results);
         //need a restart function
     });
-
+    viewRestart();
 };
 
 
@@ -279,7 +296,44 @@ function viewDept(){
     connection.query("SELECT * FROM department", function(err, results){
         if (err) throw err;
         console.log(results);
-        //need a restart function
-})};
+    });
+    viewRestart();
+};
 
+
+function addRestart(){
+    inquirer
+    .prompt([
+        {
+            type: "list",
+            message: "Would you like to continue adding or go back to the main menu?",
+            choices: ["Continue adding info", "Back to main menu"],
+            name: "addResOpt"
+        }
+    ]).then(answer => {
+        if(answer.addResOpt === "Continue adding info"){
+            addOption();
+        }else{
+            startApp()
+        };
+    });
+};
+
+function viewRestart(){
+    inquirer
+    .prompt([
+        {
+            type: "list",
+            message: "Would you like to continue going over info or go back to the main menu?",
+            choices: ["Continue viewing info", "Back to main menu"],
+            name: "viewResOpt"
+        }
+    ]).then(answer => {
+        if(answer.viewResOpt === "Continue viewing info"){
+            viewingOption();
+        }else{
+            startApp()
+        };
+    });
+}
 
